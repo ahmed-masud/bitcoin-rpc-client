@@ -42,12 +42,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import wf.bitcoin.krotjson.Base64Coder;
 import wf.bitcoin.krotjson.HexCoder;
@@ -60,7 +61,7 @@ import wf.bitcoin.krotjson.JSON;
  */
 public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
-  private static final Logger logger = Logger.getLogger(BitcoindRpcClient.class.getPackage().getName());
+  private static final Logger logger = LoggerFactory.getLogger(BitcoinJSONRPCClient.class);
 
   public static final URL DEFAULT_JSONRPC_URL;
   public static final URL DEFAULT_JSONRPC_TESTNET_URL;
@@ -85,7 +86,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
       }
 
       if (f != null) {
-        logger.fine("Bitcoin configuration file found");
+        logger.debug("Bitcoin configuration file found");
 
         Properties p = new Properties();
         try (FileInputStream i = new FileInputStream(f)) {
@@ -98,7 +99,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
         port = p.getProperty("rpcport", port);
       }
     } catch (Exception ex) {
-      logger.log(Level.SEVERE, null, ex);
+      logger.error(ex.getMessage(), ex);
     }
 
     try {
@@ -190,7 +191,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   public Object loadResponse(InputStream in, Object expectedID, boolean close) throws IOException, GenericRpcException {
     try {
       String r = new String(loadStream(in, close), QUERY_CHARSET);
-      logger.log(Level.FINE, "Bitcoin JSON-RPC response:\n{0}", r);
+      logger.trace("Bitcoin JSON-RPC response: {}", r);
       try {
         Map response = (Map) JSON.parse(r);
 
@@ -227,7 +228,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
       ((HttpURLConnection) conn).setRequestProperty("Authorization", "Basic " + authStr);
       byte[] r = prepareRequest(method, o);
-      logger.log(Level.FINE, "Bitcoin JSON-RPC request:\n{0}", new String(r, QUERY_CHARSET));
+      logger.trace("Bitcoin JSON-RPC request: {}", new String(r, QUERY_CHARSET));
       conn.getOutputStream().write(r);
       conn.getOutputStream().close();
       int responseCode = conn.getResponseCode();
@@ -2008,7 +2009,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
         try {
           raw = getRawTransaction(txId());
         } catch (GenericRpcException ex) {
-          logger.warning(ex.getMessage());
+          logger.warn(ex.getMessage(), ex);
         }
       return raw;
     }
