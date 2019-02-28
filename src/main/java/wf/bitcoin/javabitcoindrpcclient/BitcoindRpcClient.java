@@ -438,6 +438,17 @@ public interface BitcoindRpcClient {
    */
   String signRawTransaction(String hex, List<? extends TxInput> inputs, List<String> privateKeys) throws GenericRpcException;
 
+  /**
+   * The decoderawtransaction RPC decodes a serialized transaction hex string into a JSON object describing the transaction.
+   *
+   * @param hex The transaction to decode in serialized transaction format
+   *
+   * @return An object describing the decoded transaction, or JSON null if the transaction could not be decoded
+   *
+   * @see <a href="https://bitcoin.org/en/developer-reference#decoderawtransaction">decoderawtransaction</a>
+   */
+  RawTransaction decodeRawTransaction(String hex) throws GenericRpcException;
+
   /*
    * Util
    * 

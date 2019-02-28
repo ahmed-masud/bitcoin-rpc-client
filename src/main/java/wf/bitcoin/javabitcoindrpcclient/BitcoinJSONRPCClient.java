@@ -671,6 +671,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
       throw new GenericRpcException("Incomplete");
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public RawTransaction decodeRawTransaction(String hex) throws GenericRpcException {
     Map<String, ?> result = (Map<String, ?>) query("decoderawtransaction", hex);
