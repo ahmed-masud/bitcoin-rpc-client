@@ -1775,6 +1775,8 @@ public interface BitcoindRpcClient {
     String account();
 
     int confirmations();
+
+    boolean spendable();
   }
 
   static interface WalletInfo extends MapWrapperType, Serializable {

@@ -2209,6 +2209,11 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     public int confirmations() {
       return mapInt("confirmations");
     }
+
+    @Override
+    public boolean spendable() {
+      return mapBool("spendable");
+    }
   }
   
   @SuppressWarnings("serial")
