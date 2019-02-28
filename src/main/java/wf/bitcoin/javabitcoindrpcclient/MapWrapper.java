@@ -18,6 +18,7 @@
 
 package wf.bitcoin.javabitcoindrpcclient;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
@@ -28,7 +29,7 @@ import wf.bitcoin.krotjson.HexCoder;
  *
  * @author Mikhail Yevchenko m.ṥῥẚɱ.ѓѐḿởύḙ@azazar.com
  */
-public class MapWrapper implements MapWrapperType {
+public class MapWrapper implements MapWrapperType, Serializable {
 
   public final Map<String, ?> m;
 
