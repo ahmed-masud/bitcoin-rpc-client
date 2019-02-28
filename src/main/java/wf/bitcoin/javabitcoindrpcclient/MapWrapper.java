@@ -28,11 +28,11 @@ import wf.bitcoin.krotjson.HexCoder;
  *
  * @author Mikhail Yevchenko m.ṥῥẚɱ.ѓѐḿởύḙ@azazar.com
  */
-class MapWrapper implements MapWrapperType {
+public class MapWrapper implements MapWrapperType {
 
   public final Map<String, ?> m;
 
-  MapWrapper(Map<String, ?> m) {
+  public MapWrapper(Map<String, ?> m) {
     this.m = m;
   }
 
