@@ -128,7 +128,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     } catch (MalformedURLException | URISyntaxException ex) {
       throw new IllegalArgumentException(rpc.toString(), ex);
     }
-    authStr = rpc.getUserInfo() == null ? null : String.valueOf(Base64Coder.encode(rpc.getUserInfo().getBytes(Charset.forName("ISO8859-1"))));
+    setAuth(rpc.getUserInfo());
   }
 
   public BitcoinJSONRPCClient(boolean testNet) {
@@ -137,6 +137,10 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
   public BitcoinJSONRPCClient() {
     this(DEFAULT_JSONRPC_TESTNET_URL);
+  }
+
+  protected void setAuth(String userInfo) {
+    authStr = userInfo == null ? null : String.valueOf(Base64Coder.encode(userInfo.getBytes(Charset.forName("ISO8859-1"))));
   }
 
   public HostnameVerifier getHostnameVerifier() {
