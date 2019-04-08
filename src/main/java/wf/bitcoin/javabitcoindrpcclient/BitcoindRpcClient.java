@@ -1423,6 +1423,14 @@ public interface BitcoindRpcClient {
 
  }
 
+  static interface LocalAddress extends MapWrapperType, Serializable {
+    String address();
+
+    int port();
+
+    int score();
+  }
+
   static interface LockedUnspent extends MapWrapperType, Serializable {
     
     String txId();
@@ -1506,7 +1514,7 @@ public interface BitcoindRpcClient {
 
     BigDecimal relayFee();
 
-    List<String> localAddresses();
+    List<LocalAddress> localAddresses();
 
     String warnings();
   }

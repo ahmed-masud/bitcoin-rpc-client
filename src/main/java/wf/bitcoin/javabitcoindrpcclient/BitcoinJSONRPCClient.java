@@ -1236,6 +1236,28 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
+  private class LocalAddressWrapper extends MapWrapper implements LocalAddress {
+    private LocalAddressWrapper(Map<String, ?> m) {
+      super(m);
+    }
+
+    @Override
+    public String address() {
+      return mapStr("address");
+    }
+
+    @Override
+    public int port() {
+      return mapInt("port");
+    }
+
+    @Override
+    public int score() {
+      return mapInt("score");
+    }
+  }
+
+  @SuppressWarnings("serial")
   private class LockedUnspentWrapper extends MapWrapper implements LockedUnspent {
 
     private LockedUnspentWrapper(Map<String, ?> m) {
@@ -1456,8 +1478,14 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> localAddresses() {
-      return (List<String>) m.get("localaddresses");
+    public List<LocalAddress> localAddresses() {
+      List<Map<String, ?>> maps = (List<Map<String, ?>>) m.get("localaddresses");
+      List<LocalAddress> localAddresses = new LinkedList<LocalAddress>();
+      for (Map<String, ?> m : maps) {
+        LocalAddress addr = new LocalAddressWrapper(m);
+        localAddresses.add(addr);
+      }
+      return localAddresses;
     }
 
     @Override
